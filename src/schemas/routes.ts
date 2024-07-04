@@ -34,10 +34,7 @@ export const createRouteSchema = z.object({
   categories: z
     .string()
     .optional()
-    .transform((value) => {
-      if (!value) return []
-      return value.split(',').map(Number)
-    })
+    .transform((value) => value?.split(',').map(Number) ?? [])
     .pipe(z.array(numericIdSchema)),
   path: z
     .string()

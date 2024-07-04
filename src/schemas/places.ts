@@ -32,17 +32,14 @@ export const createPlaceSchema = z.object({
   categories: z
     .string()
     .optional()
-    .transform((value) => {
-      if (!value) return []
-      return value.split(',').map(Number)
-    })
+    .transform((value) => value?.split(',').map(Number) ?? [])
     .pipe(z.array(numericIdSchema)),
   location: z
     .string()
     .min(3, 'Required')
     .transform((value) => {
-      const [lat, lng] = value.split(',')
-      return { lat: Number(lat), lng: Number(lng) }
+      const [lat, lng] = value.split(',').map(Number)
+      return { lat, lng }
     })
     .pipe(
       z.object({
