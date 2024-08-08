@@ -1,6 +1,6 @@
 import haversine from 'haversine-distance'
 import { useCallback, useEffect, useState } from 'react'
-import type { MapPoint } from '~/helpers/spatial-data/point'
+import { toLatLng } from '~/helpers/spatial-data/point'
 import { useDevicePermissions } from '~/helpers/useDevicePermissions'
 
 /** In meters */
@@ -19,7 +19,7 @@ type ErrorCodes =
   | 'permission-not-granted-yet'
 
 export function useLocationValidator(
-  expectedLocation: MapPoint,
+  expectedLocation: { x: number; y: number },
   maxLocationDistance?: number | null
 ) {
   const [deviceLocationError, setDeviceLocationError] =
@@ -46,18 +46,21 @@ export function useLocationValidator(
   }, [locationPermission])
 
   const validateLocation = useCallback<
-    () => Promise<{ location: MapPoint; accuracy: number } | null>
+    () => Promise<{
+      location: { x: number; y: number }
+      accuracy: number
+    } | null>
   >(async () => {
     setLoadingDeviceLocation(true)
 
     const { error, data } = await new Promise<
       | {
           error: null
-          data: { location: MapPoint; accuracy: number }
+          data: { location: { x: number; y: number }; accuracy: number }
         }
       | {
           error: ErrorCodes
-          data: { location: MapPoint; accuracy: number } | null
+          data: { location: { x: number; y: number }; accuracy: number } | null
         }
     >((resolve) => {
       if (!('geolocation' in navigator)) {
@@ -71,15 +74,15 @@ export function useLocationValidator(
         (position) => {
           const deviceGeolocation = {
             location: {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude,
+              x: position.coords.latitude,
+              y: position.coords.longitude,
             },
             accuracy: position.coords.accuracy,
           } as const
 
           const distance = haversine(
-            deviceGeolocation.location,
-            expectedLocation
+            toLatLng(deviceGeolocation.location),
+            toLatLng(expectedLocation)
           )
           if (distance > (maxLocationDistance ?? MAX_DISTANCE_TO_PLACE)) {
             return resolve({

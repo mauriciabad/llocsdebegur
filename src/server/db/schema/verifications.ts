@@ -1,9 +1,9 @@
 import { relations, sql } from 'drizzle-orm'
 import { integer, pgTable, serial, timestamp } from 'drizzle-orm/pg-core'
-import { pointType } from '~/server/helpers/spatial-data/point'
 import { dbUserId } from '../utilities'
 import { places } from './places'
 import { users } from './users'
+import { geometryType } from './utils'
 
 export const verifications = pgTable('verification', {
   id: serial('id').primaryKey(),
@@ -14,7 +14,7 @@ export const verifications = pgTable('verification', {
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
 
-  deviceLocation: pointType('deviceLocation'),
+  deviceLocation: geometryType('deviceLocation', 'point'),
   deviceLocationAccuracy: integer('deviceLocationAccuracy'),
 })
 

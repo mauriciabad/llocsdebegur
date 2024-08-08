@@ -41,13 +41,13 @@ export const createPlaceSchema = z.object({
     .string()
     .min(3, 'Required')
     .transform((value) => {
-      const [lat, lng] = value.split(',')
-      return { lat: Number(lat), lng: Number(lng) }
+      const [x, y] = value.split(',')
+      return { x: Number(x), y: Number(y) }
     })
     .pipe(
       z.object({
-        lat: z.number(),
-        lng: z.number(),
+        x: z.number(),
+        y: z.number(),
       })
     ),
   importance: z.coerce.number().gt(0).lt(MAX_IMPORTANCE).optional().nullable(),

@@ -1,6 +1,5 @@
 import { relations } from 'drizzle-orm'
 import { doublePrecision, integer, text } from 'drizzle-orm/pg-core'
-import { pointType } from '../../helpers/spatial-data/point'
 import { pgTableWithTranslations } from '../../helpers/translations/db-tables'
 import { externalLinks } from './externalLinks'
 import { features } from './features'
@@ -8,6 +7,7 @@ import { images } from './images'
 import { placeCategories, placesToPlaceCategories } from './placeCategories'
 import { placeListToPlace } from './placeLists'
 import { routesToPlaces } from './routes'
+import { geometryType } from './utils'
 import { verificationRequirements } from './verificationRequirements'
 import { verifications } from './verifications'
 
@@ -21,7 +21,7 @@ export const {
   normalColumns: {
     mainImageId: integer('mainImageId'),
     googleMapsId: text('googleMapsId'),
-    location: pointType('location').notNull(),
+    location: geometryType('location', 'point').notNull(),
     mainCategoryId: integer('mainCategoryId').notNull(),
     featuresId: integer('featuresId').notNull(),
     verificationRequirementsId: integer('verificationRequirementsId'),

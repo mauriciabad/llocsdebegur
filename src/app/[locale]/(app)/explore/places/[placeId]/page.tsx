@@ -3,6 +3,7 @@ import { unstable_setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { type FC } from 'react'
 import { makeImageUrl } from '~/helpers/images'
+import { toLatLng } from '~/helpers/spatial-data/point'
 import {
   LocaleRouteParams,
   locales,
@@ -98,7 +99,7 @@ const PlacePage: FC<LocaleRouteParams> = async ({ params }) => {
   return (
     <>
       <OverrideMainMap
-        center={place.location}
+        center={toLatLng(place.location)}
         zoom={18}
         veryEmphasizedMarkers={veryEmphasizedMarkers}
       />

@@ -1,12 +1,9 @@
 import 'server-only'
 
 import { sql } from 'drizzle-orm'
-import { calculateLocation } from '~/helpers/spatial-data/point'
 import { getPlacesSchema } from '~/schemas/places'
 import { db } from '~/server/db/db'
-import { places } from '~/server/db/schema'
 import { getVisitedPlacesIdsByUserId } from '~/server/helpers/db-queries/placeLists'
-import { selectPoint } from '~/server/helpers/spatial-data/point'
 import {
   flattenTranslationsOnExecute,
   withTranslations,
@@ -24,9 +21,7 @@ const getPlace = flattenTranslationsOnExecute(
           content: true,
           importance: true,
           googleMapsId: true,
-        },
-        extras: {
-          location: selectPoint('location', places.location),
+          location: true,
         },
         where: (place, { eq }) =>
           eq(place.id, sql`${sql.placeholder('id')}::integer`),
@@ -87,12 +82,13 @@ export const placesRouter = router({
       id: input.id,
       userId: ctx.session?.user.id,
     })
-    return result
-      ? calculateLocation({
-          ...result,
-          images: [],
-          visited: visitedPlacesIds.has(input.id),
-        })
-      : undefined
+
+    if (!result) return undefined
+
+    return {
+      ...result,
+      images: [],
+      visited: visitedPlacesIds.has(input.id),
+    }
   }),
 })

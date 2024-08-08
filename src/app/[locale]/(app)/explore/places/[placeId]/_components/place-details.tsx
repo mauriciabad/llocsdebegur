@@ -99,7 +99,7 @@ export const PlaceDetails: FC<{
         features={place.features}
         externalLinks={place.externalLinks}
         googleMapsId={place.googleMapsId}
-        geoUri={`geo:${place.location.lat},${place.location.lng}`}
+        geoUri={`geo:${place.location.x},${place.location.y}`}
         className="mt-4"
       />
 

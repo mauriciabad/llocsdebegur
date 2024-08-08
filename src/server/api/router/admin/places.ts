@@ -1,7 +1,6 @@
 import 'server-only'
 
 import { and, asc, eq, isNull, like, or, sql } from 'drizzle-orm'
-import { calculateLocation, pointToString } from '~/helpers/spatial-data/point'
 import {
   createPlaceSchema,
   editPlaceSchema,
@@ -18,7 +17,6 @@ import {
   placesToPlaceCategories,
 } from '~/server/db/schema'
 import { ascNullsEnd } from '~/server/helpers/order-by'
-import { selectPoint } from '~/server/helpers/spatial-data/point'
 import {
   flattenTranslationsOnExecute,
   withTranslations,
@@ -143,9 +141,7 @@ const getPlace = flattenTranslationsOnExecute(
           content: true,
           importance: true,
           googleMapsId: true,
-        },
-        extras: {
-          location: selectPoint('location', places.location),
+          location: true,
         },
         where: (place, { eq }) =>
           eq(place.id, sql`${sql.placeholder('id')}::integer`),
@@ -207,7 +203,8 @@ export const placesAdminRouter = router({
       locale: input.locale,
       id: input.id,
     })
-    return result ? calculateLocation(result) : undefined
+    if (!result) return undefined
+    return result
   }),
   listCategories: adminProcedure
     .input(listCategoriesSchema)
@@ -234,7 +231,7 @@ export const placesAdminRouter = router({
               googleMapsId: input.googleMapsId,
               mainCategoryId: input.mainCategory,
               mainImageId: input.mainImageId,
-              location: pointToString(input.location),
+              location: input.location,
               importance: input.importance,
               content: input.content,
               verificationRequirementsId: 1,
@@ -293,7 +290,7 @@ export const placesAdminRouter = router({
             googleMapsId: input.googleMapsId,
             mainCategoryId: input.mainCategory,
             mainImageId: input.mainImageId,
-            location: pointToString(input.location),
+            location: input.location,
             importance: input.importance,
             content: input.content,
             featuresId: featuresId,

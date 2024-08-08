@@ -1,11 +1,9 @@
 import 'server-only'
 
 import { calculatePath } from '~/helpers/spatial-data/multi-line'
-import { calculateLocation } from '~/helpers/spatial-data/point'
 import { db } from '~/server/db/db'
-import { places, routes } from '~/server/db/schema'
+import { routes } from '~/server/db/schema'
 import { selectMultiLine } from '~/server/helpers/spatial-data/multi-line'
-import { selectPoint } from '~/server/helpers/spatial-data/point'
 import { publicProcedure, router } from '~/server/trpc'
 
 const getAllPlacesForMap = db.query.places
@@ -14,9 +12,7 @@ const getAllPlacesForMap = db.query.places
       id: true,
       name: true,
       importance: true,
-    },
-    extras: {
-      location: selectPoint('location', places.location),
+      location: true,
     },
     with: {
       mainCategory: {
@@ -54,7 +50,7 @@ const getAllRoutesForMap = db.query.routes
 
 export const mapRouter = router({
   getAllPlaces: publicProcedure.query(async () => {
-    return (await getAllPlacesForMap.execute()).map(calculateLocation)
+    return await getAllPlacesForMap.execute()
   }),
   getAllRoutes: publicProcedure.query(async () => {
     return (await getAllRoutesForMap.execute()).map(calculatePath)
