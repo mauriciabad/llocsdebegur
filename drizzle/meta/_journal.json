@@ -8,6 +8,13 @@
       "when": 1723146512724,
       "tag": "0000_nasty_scalphunter",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1723213030116,
+      "tag": "0001_heavy_molten_man",
+      "breakpoints": true
     }
   ]
 }

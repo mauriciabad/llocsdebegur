@@ -3,10 +3,7 @@ import { SRID_CODE } from '~/server/helpers/spatial-data'
 
 export const genderEnum = pgEnum('gender', ['masculine', 'feminine'])
 
-export const geometryType = <
-  TName extends string,
-  TType extends 'point' | 'linestring' | 'polygon',
->(
+export const geometryType = <TName extends string, TType extends string>(
   name: TName,
   type: TType
 ) =>
