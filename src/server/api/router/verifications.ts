@@ -1,6 +1,5 @@
 import 'server-only'
 
-import { pointToString } from '~/helpers/spatial-data/point'
 import { verificateVisitSchema } from '~/schemas/verifications'
 import { db } from '~/server/db/db'
 import { verifications } from '~/server/db/schema'
@@ -13,9 +12,7 @@ export const verificationsRouter = router({
       return await db.insert(verifications).values({
         placeId: input.placeId,
         userId: ctx.session.user.id,
-        deviceLocation: input.deviceLocation
-          ? pointToString(input.deviceLocation)
-          : null,
+        deviceLocation: input.deviceLocation,
         deviceLocationAccuracy: input.deviceLocationAccuracy,
       })
     }),

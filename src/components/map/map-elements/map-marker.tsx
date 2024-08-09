@@ -1,7 +1,6 @@
 import moize from 'moize'
 import { FC, memo, useMemo, useState } from 'react'
 import { useMap, useMapEvent } from 'react-leaflet'
-import { MapPoint } from '~/helpers/spatial-data/point'
 import { useRouter } from '~/navigation'
 import { NextMarker } from '../leaflet-components/next-js-ready/marker'
 import {
@@ -16,8 +15,8 @@ type MapMarkerSize =
   | 'not-emphasized'
 export type MapMarkerInvariable = {
   placeId: number
-  lat: MapPoint['lat']
-  lng: MapPoint['lng']
+  lat: number
+  lng: number
   url?: string
   icon: PlaceMarkerLeafletIconProps['icon']
   color: PlaceMarkerLeafletIconProps['color']

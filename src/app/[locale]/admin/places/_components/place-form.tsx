@@ -60,7 +60,7 @@ export const PlaceForm: FC<{
           description: place.description ?? undefined,
           mainCategory: place.mainCategory.id,
           categories: place.categories.map((c) => c.category.id).join(','),
-          location: `${place.location.lat}, ${place.location.lng}`,
+          location: `${place.location.x}, ${place.location.y}`,
           importance: place.importance,
           mainImageId: place.mainImage?.id ?? undefined,
           content: place.content ?? undefined,

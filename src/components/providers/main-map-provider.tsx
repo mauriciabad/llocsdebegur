@@ -54,8 +54,8 @@ export const MainMapProvider: FC<PropsWithChildren> = memo(({ children }) => {
   const { data: places } = trpc.map.getAllPlaces.useQuery()
   const markers = places?.map((place) => ({
     placeId: place.id,
-    lat: place.location.lat,
-    lng: place.location.lng,
+    lat: place.location.y,
+    lng: place.location.x,
     icon: place.mainCategory.icon,
     color: place.mainCategory.color,
     url: `/explore/places/${place.id}`,

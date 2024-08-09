@@ -32,10 +32,10 @@ export const PlacePreviewModal: FC<
   const t = useTranslations('missions')
   const isFar =
     place &&
-    (place.location.lng < 3.170467 ||
-      place.location.lng > 3.24022 ||
-      place.location.lat < 41.920697 ||
-      place.location.lat > 41.984129)
+    (place.location.x < 3.170467 ||
+      place.location.x > 3.24022 ||
+      place.location.y < 41.920697 ||
+      place.location.y > 41.984129)
 
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -70,8 +70,8 @@ export const PlacePreviewModal: FC<
                         markers={[
                           {
                             placeId: place.id,
-                            lat: place.location.lat,
-                            lng: place.location.lng,
+                            lat: place.location.y,
+                            lng: place.location.x,
                             icon: place.mainCategory.icon,
                             color: 'red',
                             size: 'sm',

@@ -5,8 +5,8 @@ export const verificateVisitSchema = z.object({
   placeId: numericIdSchema,
   deviceLocation: z
     .object({
-      lat: z.number(),
-      lng: z.number(),
+      x: z.number(),
+      y: z.number(),
     })
     .nullable(),
   deviceLocationAccuracy: z.number().nullable(),

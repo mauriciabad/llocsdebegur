@@ -84,16 +84,6 @@ export function getPoint(
   return null
 }
 
-export function calculateLocation<
-  L extends PointString | null | undefined,
-  P extends { location: L },
->(place: P) {
-  return {
-    ...place,
-    location: getPoint(place.location),
-  }
-}
-
-export function pointToString(value: MapPoint): PointString {
-  return `POINT(${value.lng} ${value.lat})`
+export function toLatLng(point: { x: number; y: number }) {
+  return { lat: point.y, lng: point.x }
 }

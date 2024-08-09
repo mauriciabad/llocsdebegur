@@ -5,7 +5,6 @@ import { useDisclosure } from '@nextui-org/use-disclosure'
 import { IconDiscountCheckFilled } from '@tabler/icons-react'
 import { useTranslations } from 'next-intl'
 import { FC } from 'react'
-import type { MapPoint } from '~/helpers/spatial-data/point'
 import { VerificationRequirements } from '~/server/db/constants/verifications'
 import {
   OnVerificate,
@@ -13,7 +12,7 @@ import {
 } from './verificate-place-visit-modal'
 
 export type VerificateButtonProps = {
-  expectedLocation: MapPoint
+  expectedLocation: { x: number; y: number }
   placeId: number
   isAlreadyVisited: boolean
   isAlreadyVerified: boolean

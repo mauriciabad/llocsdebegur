@@ -1,7 +1,6 @@
 import 'server-only'
 
 import { sql } from 'drizzle-orm'
-import { calculateLocation } from '~/helpers/spatial-data/point'
 import {
   addToVisitedPlacesListSchema,
   getVisitedPlacesSchema,
@@ -10,7 +9,6 @@ import { db } from '~/server/db/db'
 import { placeListToPlace, places } from '~/server/db/schema'
 import { getVisitedPlaceListIdByUserId } from '~/server/helpers/db-queries/placeLists'
 import { ascNullsEnd } from '~/server/helpers/order-by'
-import { selectPoint } from '~/server/helpers/spatial-data/point'
 import {
   flattenTranslationsOnExecute,
   withTranslations,
@@ -43,9 +41,7 @@ const getPlacesFromPlaceListQuery = flattenTranslationsOnExecute(
             id: true,
             name: true,
             description: true,
-          },
-          extras: {
-            location: selectPoint('location', places.location),
+            location: true,
           },
           orderBy: [ascNullsEnd(places.importance)],
           with: {
@@ -117,7 +113,7 @@ export const placeListsRouter = router({
       })
 
       return result.map(({ addedAt, place }) => ({
-        ...calculateLocation(place),
+        ...place,
         addedAt,
       }))
     }),

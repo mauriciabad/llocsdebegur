@@ -27,7 +27,6 @@ import { AlertBox } from '~/components/generic/alert-box'
 import { DividerWithText } from '~/components/generic/divider-with-text'
 import { ExplanationCard } from '~/components/generic/explanation-card'
 import { LinkButton } from '~/components/links/link-button'
-import type { MapPoint } from '~/helpers/spatial-data/point'
 import { useRouter } from '~/navigation'
 import {
   VerificationRequirements,
@@ -39,7 +38,7 @@ import { useLocationValidator } from '../_hooks/useLocationValidator'
 export type OnVerificate = (
   hasBeenVerified: boolean,
   verificationData: {
-    location: MapPoint | null
+    location: { x: number; y: number } | null
     accuracy: number | null
   }
 ) => Promise<void> | void
@@ -47,7 +46,7 @@ export type OnVerificate = (
 export const VerificatePlaceVisitModal: FC<
   Omit<ModalProps, 'children'> & {
     onVerificate?: OnVerificate
-    expectedLocation: MapPoint
+    expectedLocation: { x: number; y: number }
     placeId: number
     isAlreadyVisited: boolean
     verificationRequirements: VerificationRequirements | null

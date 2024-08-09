@@ -49,7 +49,7 @@ export const MapPointSelector: FC<{
             value={value}
             label={label}
             className="shadow-lg"
-            placeholder="Lat, Lng"
+            placeholder="Lng, Lat"
           />
           {reset && (
             <Button
@@ -67,7 +67,7 @@ export const MapPointSelector: FC<{
           className="h-full w-full rounded-md"
           onValueChange={(newValue) => {
             const newValueString = newValue
-              ? `${newValue.lat}, ${newValue.lng}`
+              ? `${newValue.lng}, ${newValue.lat}`
               : undefined
 
             onChange({ target: { value: newValueString } })

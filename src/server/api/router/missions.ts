@@ -1,7 +1,6 @@
 import 'server-only'
 
 import { sql } from 'drizzle-orm'
-import { getPoint } from '~/helpers/spatial-data/point'
 import { getVisitMissionsSchema } from '~/schemas/missions'
 import { db } from '~/server/db/db'
 import {
@@ -11,7 +10,6 @@ import {
 } from '~/server/db/schema'
 import { getVisitedPlacesIdsByUserId } from '~/server/helpers/db-queries/placeLists'
 import { ascNullsEnd } from '~/server/helpers/order-by'
-import { selectPoint } from '~/server/helpers/spatial-data/point'
 import {
   flattenTranslationsOnExecute,
   withTranslations,
@@ -67,9 +65,7 @@ const getVisitMissions = flattenTranslationsOnExecute(
                   id: true,
                   name: true,
                   description: true,
-                },
-                extras: {
-                  location: selectPoint('location', places.location),
+                  location: true,
                 },
                 with: {
                   mainImage: true,
@@ -121,9 +117,7 @@ const getVisitMissions = flattenTranslationsOnExecute(
               id: true,
               name: true,
               description: true,
-            },
-            extras: {
-              location: selectPoint('location', places.location),
+              location: true,
             },
             with: {
               mainImage: true,
@@ -198,9 +192,8 @@ export const missionsRouter = router({
               ...secondaryPlaces
                 .map(({ place }) => place)
                 .filter((place) => place && !mainPlacesIds.includes(place.id)),
-            ].map(({ location, categories, ...place }) => ({
+            ].map(({ categories, ...place }) => ({
               ...place,
-              location: getPoint(location),
               categories: categories.map(({ category }) => category),
               images: [],
               visited: visitedPlacesIds.has(place.id),
